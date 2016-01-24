@@ -2,9 +2,10 @@ class Gear
   attr_reader :chainring, :cog, :wheel
 
   def initialize(args)
-    @chainring = args.fetch(:chainring, 40) # Use of fetch to set defaults
-    @cog = args.fetch(:cog, 18)
-    @wheel = args.fetch(:wheel)
+    args = defaults.merge(args) # Use of a defaults wrapping method
+    @chainring = args[:chainring]
+    @cog = args[:cog]
+    @wheel = args[:wheel]
   end
 
   def gear_inches
@@ -13,6 +14,10 @@ class Gear
 
   def diameter # Move this message to a dependency into its own method
     wheel.diameter
+  end
+
+  def defaults
+    { :chainring => 40, :cog => 18 }
   end
 end
 
