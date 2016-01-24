@@ -1,10 +1,10 @@
 class Gear
-  attr_reader :chainring, :cog, :wheel
+  attr_reader :chainring, :cog, :rim, :tire
 
   def initialize(chainring, cog, wheel)
     @chainring = chainring
     @cog = cog
-    @wheel = wheel
+    @wheel = Wheel.new(rim, tire)
   end
 
   def gear_inches
@@ -13,4 +13,4 @@ class Gear
 end
 
 # Gear expects a 'Duck' that knows 'diameter'
-puts Gear.new(52, 11, Wheel.new(26, 1.5)).gear_inches
+puts Gear.new(52, 11, 26, 1.5).gear_inches
