@@ -10,6 +10,10 @@ class Bicycle
   def default_chain
     '10-speed' # common default
   end
+
+  def default_tire_size
+    raise NotImplementedError, "This #{self.class} cannot respond to:"
+  end
 end
 
 class RoadBike < Bicycle
@@ -39,6 +43,9 @@ class MountainBike < Bicycle
   end
 end
 
+class RecumbantBike < Bicycle
+end
+
 road_bike = RoadBike.new(size: 'M', tape_color: 'red')
 
 puts road_bike.tire_size
@@ -48,3 +55,5 @@ mountain_bike = MountainBike.new(size: 'S', front_shock: 'Manitou', rear_shock: 
 
 puts mountain_bike.tire_size
 puts mountain_bike.chain
+
+recumbant_bike = RecumbantBike.new
