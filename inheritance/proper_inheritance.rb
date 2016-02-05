@@ -5,36 +5,46 @@ class Bicycle
     @size      = args[:size]
     @chain     = args[:chain] || default_chain
     @tire_size = args[:tire_size] || default_tire_size
+
+    post_initialize(args) # Bicycle both sends
   end
 
-  def default_chain
-    '10-speed' # common default
+  def spares
+    { tire_size: tire_size,
+      chain:     chain }.merge(local_spares)
   end
 
   def default_tire_size
     raise NotImplementedError, "This #{self.class} cannot respond to:"
   end
 
-  def spares
-    { tire_size: tire_size,
-      chain:     chain }
+  # subclasses may override
+  def post_initialize(args) # and implements this
+    nil
+  end
+
+  def local_spares # hook for subclasses to override
+    {}
+  end
+
+  def default_chain
+    '10-speed' # common default
   end
 end
 
 class RoadBike < Bicycle
   attr_reader :tape_color
 
-  def initialize(args)
-    @tape_color = args[:tape_color]
-    super(args) # RoadBike now must send super
+  def post_initialize(args)
+    @tape_color = args[:tape_color] # RoadBike can optionally override it
+  end
+
+  def local_spares
+    { tape_color: tape_color }
   end
 
   def default_tire_size # subclass default
     '23'
-  end
-
-  def spares
-    super.merge({ tape_color: tape_color })
   end
 end
 
@@ -44,7 +54,10 @@ class MountainBike < Bicycle
   def initialize(args)
     @front_shock = front_shock
     @rear_shock  = rear_shock
-    super(args)
+  end
+
+  def local_spares
+    { rear_shock: rear_shock }
   end
 
   def default_tire_size # subclass default
@@ -59,12 +72,12 @@ end
 class RecumbantBike < Bicycle
   attr_reader :flag
 
-  def initialize(args)
-    @flag = args[:flag] # forgot to send super!
+  def post_initialize(args)
+    @flag = args[:flag]
   end
 
-  def spares
-    super.merge({ flag: flag })
+  def local_spares
+    { flag: flag }
   end
 
   def default_chain
