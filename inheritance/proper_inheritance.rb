@@ -57,6 +57,23 @@ class MountainBike < Bicycle
 end
 
 class RecumbantBike < Bicycle
+  attr_reader :flag
+
+  def initialize(args)
+    @flag = args[:flag] # forgot to send super!
+  end
+
+  def spares
+    super.merge({ flag: flag })
+  end
+
+  def default_chain
+    '9-speed'
+  end
+
+  def default_tire_size
+    '28'
+  end
 end
 
 road_bike = RoadBike.new(size: 'M', tape_color: 'red')
@@ -69,4 +86,5 @@ mountain_bike = MountainBike.new(size: 'S', front_shock: 'Manitou', rear_shock: 
 puts mountain_bike.tire_size
 puts mountain_bike.chain
 
-recumbant_bike = RecumbantBike.new
+recumbant_bike = RecumbantBike.new(flag: 'tall and orange')
+puts recumbant_bike.spares 
