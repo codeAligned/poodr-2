@@ -11,15 +11,18 @@ class Bicycle
   end
 end
 
+require 'forwardable'
 class Parts
-  attr_reader :parts
+  extend Forwardable
+  def_delegators :@parts, :size, :each
+  include Enumerable
 
   def initialize(parts)
     @parts = parts
   end
 
   def spares
-    parts.select(&:needs_spare)
+    select(&:needs_spare)
   end
 end
 
@@ -30,6 +33,19 @@ class Part
     @name = args[:name]
     @description = args[:description]
     @needs_spare = args.fetch(:needs_spare, true)
+  end
+end
+
+module PartsFactory
+  def self.build(config, part_class = Part, parts_class = Parts)
+    parts_class.new(
+      config.map do |part_config|
+        part_class.new(
+          name: part_config[0],
+          description: part_config[1],
+          needs_spare: part_config.fetch(2, true))
+      end
+    )
   end
 end
 
@@ -97,3 +113,5 @@ mountain_bike =
 
 puts mountain_bike.size
 puts mountain_bike.spares
+puts mountain_bike.spares.size
+puts mountain_bike.parts.size
