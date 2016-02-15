@@ -1,18 +1,20 @@
 class Mechanic
-  def prepare_bicycles(bicycle)
+  def prepare_trip(trip)
+    trip.bicycles.each { |bicycle| prepare_bicycle(bicycle) }
   end
 end
 
 class TripCoordinator
-  def buy_food(customers)
+  def prepare_trip(trip)
+    buy_food(trip.customers)
   end
 end
 
 def Driver
-  def gas_up(vehicle)
-  end
-
-  def fill_water_tank(vehicle)
+  def prepare_trip(trip)
+    vehicle = trip.vehicle
+    gas_up(vehicle)
+    fill_water_tank(vehicle)
   end
 end
 
