@@ -1,13 +1,16 @@
 require "./testing_incoming_messages"
-require "minitest"
+
+module DiamterizableInterfaceTest
+  def test_implements_the_diameterizable_interface
+    assert_respond_to(@object, :width)
+  end
+end
 
 class WheelTest < Minitest::Test
-  def setup
-    @wheel = Wheelnew(26, 1.5)
-  end
+  include DiameterizableInterfaceTest
 
-  def test_implements_the_diameterizable_interface
-    assert_respond_to(@wheel, :diameter)
+  def setup
+    @wheel = @object = Wheelnew(26, 1.5)
   end
 
   def test_calculates_diameter

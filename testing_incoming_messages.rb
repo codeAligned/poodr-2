@@ -22,7 +22,7 @@ class Gear
 
   def gear_inches
     # The object in the 'wheel' variable plays the 'Diameterizable' role
-    ratio * wheel.diameter
+    ratio * wheel.width
   end
 
   def ratio
